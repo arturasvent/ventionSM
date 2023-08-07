@@ -4,6 +4,25 @@ import {GeneralState} from '../../typescript/redux/generalTypes';
 const initialState: GeneralState = {
   employees: [],
   divisions: [],
+  tableHead: [
+    'Name',
+    'Job title',
+    'Rate #1',
+    'Comission %#1',
+    'Comission #1',
+    'Rate #2',
+    'Comission %#2',
+    'Comission #2',
+    'Revenue',
+    `Salary`,
+    'Salary USD',
+    'Employer taxes',
+    'CM1',
+    'CM1 %',
+    'CM2',
+    'CM2 %',
+    'Positions',
+  ],
 };
 
 export const generalSlice = createSlice({

@@ -7,32 +7,12 @@ import styled from 'styled-components/native';
 import {defaultTheme} from '../theme';
 
 const TableComponent = () => {
-  const HeadTable = [
-    'Name',
-    'Job title',
-    'Rate #1',
-    'Comission %#1',
-    'Comission #1',
-    'Rate #2',
-    'Comission %#2',
-    'Comission #2',
-    'Revenue',
-    `Salary`,
-    'Salary USD',
-    'Employer taxes',
-    'CM1',
-    'CM1 %',
-    'CM2',
-    'CM2 %',
-    'Positions',
-  ];
-
   const employeesData = useSelector(
     (state: RootState) => state.general.employees,
   );
-  const divisions = useSelector((state: RootState) => state.general.divisions);
-
-  console.log(divisions);
+  const {divisions, tableHead} = useSelector(
+    (state: RootState) => state.general,
+  );
 
   const renderItem = useCallback(
     ({item}: any) => {
@@ -65,7 +45,7 @@ const TableComponent = () => {
           <DivisionTitle>{item}</DivisionTitle>
           <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
             <Row
-              data={HeadTable}
+              data={tableHead}
               style={styles.HeadStyle}
               textStyle={styles.TableText}
             />

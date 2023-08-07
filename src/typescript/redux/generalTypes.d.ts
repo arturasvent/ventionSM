@@ -1,6 +1,7 @@
 export interface GeneralState {
   employees: Employee[];
   divisions: any;
+  tableHead: string[];
 }
 
 export interface Employee {
