@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
+import {FlatList, StyleSheet} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
@@ -27,19 +27,60 @@ const TableComponent = () => {
     'Positions',
   ];
 
-  const DataTable = useSelector((state: RootState) => state.general.data);
+  const employeesData = useSelector(
+    (state: RootState) => state.general.employees,
+  );
+  const divisions = useSelector((state: RootState) => state.general.divisions);
+
+  console.log(divisions);
+
+  const renderItem = useCallback(
+    ({item}: any) => {
+      const filteredEmployees = employeesData.filter(
+        employee => employee.division === item,
+      );
+
+      const mappedArray = filteredEmployees.map(obj => [
+        `${obj.name} ${obj.lastName} `,
+        obj.jobPosition,
+        obj.rate1,
+        obj.comission1,
+        obj.endComission1,
+        obj.rate2,
+        obj.comission2,
+        obj.endComission2,
+        obj.revenue,
+        obj.salary,
+        obj.salaryUSD,
+        obj.employerTaxes,
+        obj.CM1,
+        obj.CM1comission,
+        obj.CM2,
+        obj.CM2comission,
+        obj.positions,
+      ]);
+
+      return (
+        <>
+          <DivisionTitle>{item}</DivisionTitle>
+          <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
+            <Row
+              data={HeadTable}
+              style={styles.HeadStyle}
+              textStyle={styles.TableText}
+            />
+            <Rows data={mappedArray} textStyle={styles.TableText} />
+          </Table>
+        </>
+      );
+    },
+    [employeesData],
+  );
+
   return (
-    <Wrapper style={{flexDirection: 'column'}}>
+    <Wrapper>
       <TableContainer>
-        <DivisionTitle>LT.DIV1.D1.G2</DivisionTitle>
-        <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
-          <Row
-            data={HeadTable}
-            style={styles.HeadStyle}
-            textStyle={styles.TableText}
-          />
-          <Rows data={DataTable} textStyle={styles.TableText} />
-        </Table>
+        <FlatList data={divisions} renderItem={renderItem} />
       </TableContainer>
     </Wrapper>
   );
@@ -68,6 +109,7 @@ const TableContainer = styled.View`
 const Wrapper = styled.View`
   flex-direction: column;
   background-color: ${defaultTheme.colors.background};
+  width: 100%;
 `;
 
 const DivisionTitle = styled.Text`

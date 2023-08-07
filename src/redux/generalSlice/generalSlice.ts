@@ -2,18 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 import {GeneralState} from '../../typescript/redux/generalTypes';
 
 const initialState: GeneralState = {
-  data: [
-    [
-      'Arturas',
-      'Software developer',
-      '20$',
-      '5%',
-      '0.00',
-      '0.00',
-      '1000$',
-      '0',
-    ],
-  ],
+  employees: [],
+  divisions: [],
 };
 
 export const generalSlice = createSlice({
@@ -21,9 +11,20 @@ export const generalSlice = createSlice({
   initialState,
   reducers: {
     addNewEmployee: (state, action) => {
-      state.data = [...state.data, action.payload];
+      state.employees = [...state.employees, action.payload];
+    },
+    addDivision: (state, action) => {
+      const uniq = [...new Set([...state.divisions, action.payload])];
+      const allDivisions = [...new Set(uniq)];
+
+      state.divisions = allDivisions;
     },
   },
 });
 
-export const {addNewEmployee} = generalSlice.actions;
+export const {addNewEmployee, addDivision} = generalSlice.actions;
+
+// 'LT1.DIV2.G1.D3',
+// 'LT1.ZME2.G2.D7',
+// 'LT1.EAQ2.G4.D4',
+// 'LT1.DIV2.G2.D6',
