@@ -42,13 +42,7 @@ export const defaultTheme = {
       xxs: 10 as 10,
       custom: (size: number) => size,
     },
-    /**
-     * Fonts for the app.
-     * By example: @param regular: 'Poppins-Regular'
-     */
     weight: {
-      // thin: '' as '300',
-      // regular: '' as '400',
       medium: 'Roobert-Medium' as '500',
       semiBold: 'Roobert-Bold' as '600',
       bold: 'Roobert-Bold' as '700',

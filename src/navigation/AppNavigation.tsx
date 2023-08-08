@@ -4,13 +4,14 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AppScreen} from '../typescript/static/AppScreens';
 import HomeScreen from '../screens/HomeScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
-import {Employee} from '../typescript/redux/generalTypes';
+import InformationScreen from '../screens/InformationScreen';
 
 export type RootStackParamList = {
   [AppScreen.Home]: {};
   [AppScreen.Registration]: {
     name: string;
   };
+  [AppScreen.Information]: {};
 };
 
 export const AppNavigation = () => {
@@ -30,7 +31,12 @@ export const AppNavigation = () => {
         <Stack.Screen
           name={AppScreen.Registration}
           component={RegistrationScreen}
-          options={{title: 'Registration', orientation: 'landscape'}}
+          options={{orientation: 'landscape'}}
+        />
+        <Stack.Screen
+          name={AppScreen.Information}
+          component={InformationScreen}
+          options={{orientation: 'landscape', title: 'Information'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

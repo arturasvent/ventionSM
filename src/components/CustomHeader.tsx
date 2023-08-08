@@ -9,7 +9,10 @@ const CustomHeader = () => {
   const navigation = useNavigation<any>();
   return (
     <Container>
-      <Text></Text>
+      <ImageContainer
+        onPress={() => navigation.navigate(AppScreen.Information)}>
+        <Image source={icons.info} />
+      </ImageContainer>
       <Text>Home</Text>
       <ImageContainer
         onPress={() => navigation.navigate(AppScreen.Registration)}>
@@ -36,5 +39,5 @@ const ImageContainer = styled.TouchableOpacity``;
 const Image = styled.Image`
   height: 25px;
   width: 25px;
-  margin-right: 20px;
+  margin-horizontal: 20px;
 `;

@@ -22,6 +22,9 @@ const initialState: GeneralState = {
     'CM2',
     'CM2 %',
   ],
+  monthlyHours: 168,
+  employerTaxes: 1.77,
+  exangeRate: 1.09,
 };
 
 export const generalSlice = createSlice({

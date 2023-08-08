@@ -2,6 +2,9 @@ export interface GeneralState {
   employees: Employee[];
   divisions: any;
   tableHead: string[];
+  monthlyHours: number;
+  employerTaxes: number;
+  exangeRate: number;
 }
 
 export interface Employee {

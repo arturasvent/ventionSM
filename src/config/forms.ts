@@ -3,6 +3,7 @@ import {EFormName, EFormType} from '../typescript/static/EForm';
 import {EmployeeForm} from '../typescript/employee/employee';
 import {string} from 'yup';
 import * as yup from 'yup';
+import {InformationForm} from '../typescript/information/information';
 
 export type FieldType<Values, T = TextInputProps> = T & {
   name: keyof Values;
@@ -18,6 +19,7 @@ type FormType<T> = {
 
 interface TForms {
   newEmployee: FormType<EmployeeForm>;
+  generalInformation: FormType<InformationForm>;
 }
 
 const RegistrationSchema = yup.object({
@@ -83,5 +85,24 @@ export const forms: TForms = {
       },
     ],
     validationSchema: RegistrationSchema,
+  },
+  generalInformation: {
+    fields: [
+      {
+        name: EFormName.MonthlyHours,
+        textContentType: 'name',
+        keyboardType: 'number-pad',
+      },
+      {
+        name: EFormName.ExchangeRate,
+        textContentType: 'name',
+        keyboardType: 'number-pad',
+      },
+      {
+        name: EFormName.EmployerTaxes,
+        textContentType: 'name',
+        keyboardType: 'number-pad',
+      },
+    ],
   },
 };

@@ -26,7 +26,7 @@ export const useEmployees = () => {
     const sumComission1 = (168 * rate1 * comission1) / 100;
     const sumComission2 = 168 * rate2 * comission2;
     const revenue = ((rate1 + rate2) * 168) / 10;
-    const salaryUSD = salary * 1.09;
+    const salaryUSD = Number((salary * 1.09).toFixed(2));
     const employerTaxes = Number(((salary * 1.09 * 1.77) / 100).toFixed(2));
     const CM1 = Number(
       (
@@ -49,9 +49,6 @@ export const useEmployees = () => {
     );
     const CM2comission =
       revenue > 0 ? ((CM2 / revenue) * 100).toFixed(2) : CM1comission;
-
-    console.log(CM1);
-
     return {
       ...form,
       fullName: `${form.name} ${form.lastName}`,
