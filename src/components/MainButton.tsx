@@ -5,12 +5,12 @@ import {defaultTheme} from '../theme';
 interface IProps {
   label: string;
   onPress: () => void;
-  withOpacity?: boolean;
+  remove?: boolean;
 }
 
-const MainButton = ({label, onPress}: IProps) => {
+const MainButton = ({label, onPress, remove}: IProps) => {
   return (
-    <ButtonContainer onPress={onPress}>
+    <ButtonContainer onPress={onPress} remove={remove}>
       <ButtonText>{label}</ButtonText>
     </ButtonContainer>
   );
@@ -18,13 +18,14 @@ const MainButton = ({label, onPress}: IProps) => {
 
 export default MainButton;
 
-const ButtonContainer = styled.TouchableOpacity`
+const ButtonContainer = styled.TouchableOpacity<{remove?: boolean}>`
   width: 100%;
   height: ${defaultTheme.sizes.button}px;
   border: 1px solid ${defaultTheme.colors.primary};
   border-radius: ${defaultTheme.roundness.button}px;
   align-items: center;
-  background-color: ${defaultTheme.colors.primary};
+  background-color: ${({remove}) =>
+    remove ? defaultTheme.colors.error : defaultTheme.colors.primary};
   flex-direction: row;
   justify-content: center;
   align-self: center;

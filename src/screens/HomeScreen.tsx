@@ -3,29 +3,28 @@ import CustomHeader from '../components/CustomHeader';
 import TableComponent from '../components/TableComponent';
 import {styled} from 'styled-components/native';
 import {defaultTheme} from '../theme';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
   return (
-    <HomeContainer showsVerticalScrollIndicator={false}>
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: defaultTheme.colors.background}}
+      edges={['bottom']}>
       <CustomHeader />
-      <HomeScrollView
+      <VerticalHomeScrollView
         horizontal
         bounces={false}
+        showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <TableComponent />
-      </HomeScrollView>
-    </HomeContainer>
+      </VerticalHomeScrollView>
+    </SafeAreaView>
   );
 };
 
 export default HomeScreen;
 
-const HomeScrollView = styled.ScrollView`
-  flex: 1;
-  background-color: ${defaultTheme.colors.background};
-`;
-
-const HomeContainer = styled.ScrollView`
+const VerticalHomeScrollView = styled.ScrollView`
   flex: 1;
   background-color: ${defaultTheme.colors.background};
 `;

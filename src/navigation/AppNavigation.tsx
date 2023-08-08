@@ -4,9 +4,17 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AppScreen} from '../typescript/static/AppScreens';
 import HomeScreen from '../screens/HomeScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
+import {Employee} from '../typescript/redux/generalTypes';
+
+export type RootStackParamList = {
+  [AppScreen.Home]: {};
+  [AppScreen.Registration]: {
+    name: string;
+  };
+};
 
 export const AppNavigation = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>
@@ -22,7 +30,7 @@ export const AppNavigation = () => {
         <Stack.Screen
           name={AppScreen.Registration}
           component={RegistrationScreen}
-          options={{title: 'Registration'}}
+          options={{title: 'Registration', orientation: 'landscape'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

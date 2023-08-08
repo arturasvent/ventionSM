@@ -1,6 +1,6 @@
 import {TextInputProps} from 'react-native';
 import {EFormName, EFormType} from '../typescript/static/EForm';
-import {NewEmployeeForm} from '../typescript/employee/employee';
+import {EmployeeForm} from '../typescript/employee/employee';
 import {string} from 'yup';
 import * as yup from 'yup';
 
@@ -17,7 +17,7 @@ type FormType<T> = {
 };
 
 interface TForms {
-  newEmployee: FormType<NewEmployeeForm>;
+  newEmployee: FormType<EmployeeForm>;
 }
 
 const RegistrationSchema = yup.object({

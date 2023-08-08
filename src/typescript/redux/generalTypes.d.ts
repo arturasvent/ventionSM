@@ -5,8 +5,7 @@ export interface GeneralState {
 }
 
 export interface Employee {
-  name: string;
-  lastName: string;
+  fullName: string;
   division: string;
   jobPosition: string;
   rate1: string;
@@ -25,4 +24,7 @@ export interface Employee {
   CM1comission: string;
   CM2: string;
   CM2comission: string;
+  name: string;
+  lastName: string;
+  id: string;
 }

@@ -1,4 +1,4 @@
-export interface NewEmployeeForm {
+export interface EmployeeForm {
   name: string;
   lastName: string;
   division: string;

@@ -20,18 +20,11 @@ export const defaultTheme = {
   colors: {
     text: '#000000',
     background: '#FFFFFF',
-    tabBarBackground: '#DFDFDF',
     primary: '#00A2FF',
     placeholder: '#8F8F8F',
-    saleBackground: '#F9DF00',
-    saleBorder: '#DBC400',
-    hotDealBackground: '#008FDB',
-    hotDealBorder: '#006BA4',
+    employee: '#AD4040',
     darkerPrimary: '#AD4040',
     error: '#FF0000',
-    edit: '#87CEEB',
-    secondary: '#1D252D',
-    secondaryBackground: '#D8D9DB',
   },
   font: {
     size: {

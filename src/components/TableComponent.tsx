@@ -1,10 +1,18 @@
 import React, {useCallback} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  Table,
+  Row,
+  Rows,
+  Cell,
+  TableWrapper,
+} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import styled from 'styled-components/native';
 import {defaultTheme} from '../theme';
+import {useNavigation} from '@react-navigation/native';
+import {AppScreen} from '../typescript/static/AppScreens';
 
 const TableComponent = () => {
   const employeesData = useSelector(
@@ -14,6 +22,25 @@ const TableComponent = () => {
     (state: RootState) => state.general,
   );
 
+  const navigation = useNavigation<any>();
+
+  console.log(employeesData, 'data');
+
+  const handleOnPress = useCallback(
+    (name: string) => {
+      navigation.navigate(AppScreen.Registration, {name});
+    },
+    [employeesData],
+  );
+
+  const renderButton = useCallback((data: string, index: number) => {
+    return (
+      <ButtonContainer onPress={() => handleOnPress(data)}>
+        <EmployeeName>{data}</EmployeeName>
+      </ButtonContainer>
+    );
+  }, []);
+
   const renderItem = useCallback(
     ({item}: any) => {
       const filteredEmployees = employeesData.filter(
@@ -21,7 +48,7 @@ const TableComponent = () => {
       );
 
       const mappedArray = filteredEmployees.map(obj => [
-        `${obj.name} ${obj.lastName} `,
+        obj.fullName,
         obj.jobPosition,
         obj.rate1,
         obj.comission1,
@@ -41,17 +68,37 @@ const TableComponent = () => {
       ]);
 
       return (
-        <>
+        <TableContainer>
           <DivisionTitle>{item}</DivisionTitle>
           <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
             <Row
               data={tableHead}
               style={styles.HeadStyle}
               textStyle={styles.TableText}
+              widthArr={[
+                150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
+                150, 150, 150, 150,
+              ]}
             />
-            <Rows data={mappedArray} textStyle={styles.TableText} />
+
+            {mappedArray.map((rowData, rowIndex) => (
+              <TableWrapper key={rowIndex} style={styles.row}>
+                {rowData.map((cellData, cellIndex) => (
+                  <Cell
+                    key={cellIndex}
+                    data={
+                      cellIndex === 0
+                        ? renderButton(cellData, rowIndex)
+                        : cellData
+                    }
+                    textStyle={styles.text}
+                    width={150}
+                  />
+                ))}
+              </TableWrapper>
+            ))}
           </Table>
-        </>
+        </TableContainer>
       );
     },
     [employeesData],
@@ -59,9 +106,13 @@ const TableComponent = () => {
 
   return (
     <Wrapper>
-      <TableContainer>
-        <FlatList data={divisions} renderItem={renderItem} />
-      </TableContainer>
+      <Container>
+        <FlatList
+          data={divisions}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+        />
+      </Container>
     </Wrapper>
   );
 };
@@ -75,12 +126,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#A5A335',
   },
   TableText: {
-    margin: 10,
     fontSize: 12,
+    margin: 5,
+    textAlign: 'center',
   },
+
+  row: {flexDirection: 'row', backgroundColor: defaultTheme.colors.background},
+  text: {margin: 5, textAlign: 'center'},
+
+  btn: {width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2},
+  btnText: {textAlign: 'center', color: '#fff'},
 });
 
-const TableContainer = styled.View`
+const Container = styled.View`
   flex: 1;
   padding-horizontal: ${defaultTheme.sizes.getSpacing(5)}px;
   background-color: ${defaultTheme.colors.background};
@@ -95,6 +153,15 @@ const Wrapper = styled.View`
 const DivisionTitle = styled.Text`
   font-size: 22px;
   font-weight: bold;
-  align-self: center;
   margin-vertical: 10px;
+`;
+const TableContainer = styled.View`
+  margin-bottom: ${defaultTheme.sizes.getSpacing(5)}px;
+`;
+const ButtonContainer = styled.TouchableOpacity``;
+
+const EmployeeName = styled.Text`
+  color: ${defaultTheme.colors.employee};
+  margin: 5px;
+  text-align: center;
 `;

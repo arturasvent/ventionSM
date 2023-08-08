@@ -38,12 +38,14 @@ export const generalSlice = createSlice({
 
       state.divisions = allDivisions;
     },
+    clearEmployee: (state, action) => {
+      state.employees = action.payload;
+    },
+    updateEmployee: (state, action) => {
+      state.employees[action.payload.index] = action.payload;
+    },
   },
 });
 
-export const {addNewEmployee, addDivision} = generalSlice.actions;
-
-// 'LT1.DIV2.G1.D3',
-// 'LT1.ZME2.G2.D7',
-// 'LT1.EAQ2.G4.D4',
-// 'LT1.DIV2.G2.D6',
+export const {addNewEmployee, addDivision, clearEmployee, updateEmployee} =
+  generalSlice.actions;
