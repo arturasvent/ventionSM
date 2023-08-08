@@ -27,7 +27,6 @@ const RegistrationSchema = yup.object({
   [EFormName.Comission2]: string().required(`Required`).trim(),
   [EFormName.Division]: string().required(`Required`).trim(),
   [EFormName.JobPosition]: string().required(`Required`).trim(),
-  [EFormName.Positions]: string().required(`Required`).trim(),
   [EFormName.Rate1]: string().required(`Required`).trim(),
   [EFormName.Rate2]: string().required(`Required`).trim(),
   [EFormName.Salary]: string().required(`Required`).trim(),
@@ -39,43 +38,48 @@ export const forms: TForms = {
       {
         name: EFormName.Name,
         textContentType: 'name',
+        keyboardType: 'default',
       },
       {
         name: EFormName.LastName,
         textContentType: 'name',
+        keyboardType: 'default',
       },
       {
         name: EFormName.Division,
         textContentType: 'name',
+        keyboardType: 'default',
       },
 
       {
         name: EFormName.JobPosition,
         textContentType: 'jobTitle',
+        keyboardType: 'default',
       },
       {
         name: EFormName.Rate1,
         textContentType: 'name',
+        keyboardType: 'number-pad',
       },
       {
         name: EFormName.Comission1,
         textContentType: 'name',
+        keyboardType: 'number-pad',
       },
       {
         name: EFormName.Rate2,
         textContentType: 'name',
+        keyboardType: 'number-pad',
       },
       {
         name: EFormName.Comission2,
         textContentType: 'name',
+        keyboardType: 'number-pad',
       },
       {
         name: EFormName.Salary,
         textContentType: 'name',
-      },
-      {
-        name: EFormName.Positions,
-        textContentType: 'name',
+        keyboardType: 'number-pad',
       },
     ],
     validationSchema: RegistrationSchema,

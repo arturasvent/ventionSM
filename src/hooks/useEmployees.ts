@@ -12,6 +12,7 @@ import {RootState} from '../redux/store';
 import {Employee} from '../typescript/redux/generalTypes';
 import {useNavigation} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
+import {Alert} from 'react-native';
 
 export const useEmployees = () => {
   const dispatch = useDispatch();
@@ -21,18 +22,48 @@ export const useEmployees = () => {
   );
 
   const handleForm = useCallback((form: EmployeeForm, employee?: Employee) => {
+    const {rate1, rate2, comission1, comission2, salary} = form;
+    const sumComission1 = (168 * rate1 * comission1) / 100;
+    const sumComission2 = 168 * rate2 * comission2;
+    const revenue = ((rate1 + rate2) * 168) / 10;
+    const salaryUSD = salary * 1.09;
+    const employerTaxes = Number(((salary * 1.09 * 1.77) / 100).toFixed(2));
+    const CM1 = Number(
+      (
+        revenue -
+        employerTaxes -
+        salaryUSD -
+        sumComission1 -
+        sumComission2
+      ).toFixed(2),
+    );
+    const CM1comission = revenue > 0 ? ((CM1 / revenue) * 100).toFixed(2) : 0;
+    const CM2 = Number(
+      (
+        revenue -
+        employerTaxes -
+        salaryUSD -
+        sumComission1 -
+        sumComission2
+      ).toFixed(2),
+    );
+    const CM2comission =
+      revenue > 0 ? ((CM2 / revenue) * 100).toFixed(2) : CM1comission;
+
+    console.log(CM1);
+
     return {
       ...form,
       fullName: `${form.name} ${form.lastName}`,
-      endComission1: 0,
-      endComission2: 0,
-      revenue: 0,
-      salaryUSD: 0,
-      employerTaxes: 0,
-      CM1: 0,
-      CM1comission: 0,
-      CM2: 0,
-      CM2comission: 0,
+      sumComission1,
+      sumComission2,
+      revenue,
+      salaryUSD,
+      employerTaxes,
+      CM1,
+      CM1comission,
+      CM2,
+      CM2comission,
       id: employee?.id ? employee.id : uuid.v4(),
     };
   }, []);
@@ -69,9 +100,20 @@ export const useEmployees = () => {
         item => item.id !== employee.id,
       );
 
-      dispatch(clearEmployee(updatedEmployees));
-
-      navigation.goBack();
+      Alert.alert('Delete employee', 'Are you sure you want to delete?', [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch(clearEmployee(updatedEmployees));
+            navigation.goBack();
+          },
+        },
+      ]);
     },
     [employeesData, clearEmployee],
   );

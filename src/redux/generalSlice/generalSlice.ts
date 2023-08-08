@@ -21,7 +21,6 @@ const initialState: GeneralState = {
     'CM1 %',
     'CM2',
     'CM2 %',
-    'Positions',
   ],
 };
 

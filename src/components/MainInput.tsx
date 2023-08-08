@@ -1,6 +1,8 @@
 import React, {useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {defaultTheme} from '../theme';
+import {EFormName} from '../typescript/static/EForm';
+import {KeyboardTypeOptions} from 'react-native';
 
 interface IProps {
   placeholder?: string;
@@ -9,6 +11,8 @@ interface IProps {
   onChangeText: () => void;
   secureText?: boolean;
   formName: string;
+  isUpdate?: boolean;
+  type: KeyboardTypeOptions;
 }
 
 const MainInput = ({
@@ -17,9 +21,12 @@ const MainInput = ({
   value,
   secureText,
   formName,
+  isUpdate,
+  type,
 }: IProps) => {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
+  const isEditable = formName === EFormName.Division && isUpdate;
 
   const handleFocus = () => {
     setIsFocused(!isFocused);
@@ -39,6 +46,10 @@ const MainInput = ({
           secureTextEntry={secureText}
           autoCapitalize="none"
           placeholderTextColor={defaultTheme.colors.placeholder}
+          editable={!isEditable}
+          selectTextOnFocus={isEditable}
+          isEditable={isEditable}
+          keyboardType={type ? type : 'default'}
         />
       </InputWrapper>
     </>
@@ -47,13 +58,14 @@ const MainInput = ({
 
 export default MainInput;
 
-const TextField = styled.TextInput`
+const TextField = styled.TextInput<{isEditable?: boolean}>`
   height: ${defaultTheme.sizes.input}px;
   background-color: ${defaultTheme.colors.background};
   padding: ${defaultTheme.sizes.getSpacing(2)}px;
   font-size: ${defaultTheme.font.size.md}px;
   width: 100%;
-  color: ${defaultTheme.colors.text};
+  color: ${({isEditable}) =>
+    !isEditable ? defaultTheme.colors.text : defaultTheme.colors.placeholder};
   border-radius: 15px;
 `;
 

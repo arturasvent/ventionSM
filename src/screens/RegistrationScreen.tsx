@@ -16,6 +16,7 @@ import {RootStackParamList} from '../navigation/AppNavigation';
 import {AppScreen} from '../typescript/static/AppScreens';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface Props
   extends NativeStackScreenProps<RootStackParamList, AppScreen.Registration> {}
@@ -79,6 +80,8 @@ const RegistrationScreen = ({route, navigation}: Props) => {
                 value={value}
                 secureText={form.secureTextEntry}
                 formName={form.name}
+                isUpdate={employeeToUpdate?.id ? true : false}
+                type={form.keyboardType!}
               />
               {errors[form.name]?.message && (
                 <ErrorText>{errors[form.name]?.message as EFormName}</ErrorText>
@@ -95,12 +98,16 @@ const RegistrationScreen = ({route, navigation}: Props) => {
     <SafeArea edges={['bottom']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Container>
-          <>{forms.newEmployee.fields.map(renderInput)}</>
+          <KeyboardAwareScrollView>
+            {forms.newEmployee.fields.map(renderInput)}
+          </KeyboardAwareScrollView>
           <MainButton
             label={employeeToUpdate ? 'Update Information' : 'Add new employee'}
             onPress={handleSubmit(
+              //@ts-ignore
               employeeToUpdate
-                ? data => updateInformation(data, employeeToUpdate.id)
+                ? data =>
+                    updateInformation(data as EmployeeForm, employeeToUpdate.id)
                 : addEmployee,
             )}
           />

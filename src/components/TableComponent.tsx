@@ -24,16 +24,14 @@ const TableComponent = () => {
 
   const navigation = useNavigation<any>();
 
-  console.log(employeesData, 'data');
-
   const handleOnPress = useCallback(
-    (name: string) => {
+    (name: string | number) => {
       navigation.navigate(AppScreen.Registration, {name});
     },
     [employeesData],
   );
 
-  const renderButton = useCallback((data: string, index: number) => {
+  const renderButton = useCallback((data: string | number) => {
     return (
       <ButtonContainer onPress={() => handleOnPress(data)}>
         <EmployeeName>{data}</EmployeeName>
@@ -52,10 +50,10 @@ const TableComponent = () => {
         obj.jobPosition,
         obj.rate1,
         obj.comission1,
-        obj.endComission1,
+        obj.sumComission1,
         obj.rate2,
         obj.comission2,
-        obj.endComission2,
+        obj.sumComission2,
         obj.revenue,
         obj.salary,
         obj.salaryUSD,
@@ -64,7 +62,6 @@ const TableComponent = () => {
         obj.CM1comission,
         obj.CM2,
         obj.CM2comission,
-        obj.positions,
       ]);
 
       return (
@@ -77,7 +74,7 @@ const TableComponent = () => {
               textStyle={styles.TableText}
               widthArr={[
                 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
-                150, 150, 150, 150,
+                150, 150, 150,
               ]}
             />
 
@@ -86,11 +83,7 @@ const TableComponent = () => {
                 {rowData.map((cellData, cellIndex) => (
                   <Cell
                     key={cellIndex}
-                    data={
-                      cellIndex === 0
-                        ? renderButton(cellData, rowIndex)
-                        : cellData
-                    }
+                    data={cellIndex === 0 ? renderButton(cellData) : cellData}
                     textStyle={styles.text}
                     width={150}
                   />
