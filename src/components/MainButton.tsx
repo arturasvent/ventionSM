@@ -19,7 +19,6 @@ const MainButton = ({label, onPress, remove}: IProps) => {
 export default MainButton;
 
 const ButtonContainer = styled.TouchableOpacity<{remove?: boolean}>`
-  width: 100%;
   height: ${defaultTheme.sizes.button}px;
   border: 1px solid ${defaultTheme.colors.primary};
   border-radius: ${defaultTheme.roundness.button}px;
@@ -30,6 +29,7 @@ const ButtonContainer = styled.TouchableOpacity<{remove?: boolean}>`
   justify-content: center;
   align-self: center;
   margin-top: ${defaultTheme.sizes.getSpacing(5)}px;
+  width: 200px;
 `;
 
 const ButtonText = styled.Text`

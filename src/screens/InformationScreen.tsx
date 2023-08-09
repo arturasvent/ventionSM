@@ -1,4 +1,3 @@
-import {Text, View} from 'react-native';
 import React, {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
@@ -11,11 +10,15 @@ import MainInput from '../components/MainInput';
 import {inputPlaceholders} from '../config/constants';
 import {EFormName} from '../typescript/static/EForm';
 import {yupResolver} from '@hookform/resolvers/yup';
+import MainButton from '../components/MainButton';
+import {useEmployees} from '../hooks/useEmployees';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const InformationScreen = () => {
-  const {monthlyHours, employerTaxes, exangeRate} = useSelector(
+  const {monthlyHours, employerTax, exchangeRate} = useSelector(
     (state: RootState) => state.general,
   );
+  const {updateRates} = useEmployees();
 
   const {
     control,
@@ -24,10 +27,10 @@ const InformationScreen = () => {
   } = useForm({
     defaultValues: {
       [EFormName.MonthlyHours]: monthlyHours,
-      [EFormName.ExchangeRate]: exangeRate,
-      [EFormName.EmployerTaxes]: employerTaxes,
+      [EFormName.ExchangeRate]: exchangeRate,
+      [EFormName.EmployerTaxes]: employerTax,
     },
-    resolver: yupResolver(forms.newEmployee.validationSchema),
+    resolver: yupResolver(forms.generalInformation.validationSchema),
   });
 
   const renderInput = useCallback(
@@ -41,7 +44,9 @@ const InformationScreen = () => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <>
+              <Label>{inputPlaceholders[form.name]}</Label>
               <MainInput
+                placeholder={inputPlaceholders[form.name]}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -61,21 +66,39 @@ const InformationScreen = () => {
     [control, errors],
   );
   return (
-    <Container>
-      <>{forms.generalInformation.fields.map(renderInput)}</>
-    </Container>
+    <SafeArea edges={['bottom']}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Container>
+          <>{forms.generalInformation.fields.map(renderInput)}</>
+          <MainButton label="Update" onPress={handleSubmit(updateRates)} />
+        </Container>
+      </ScrollView>
+    </SafeArea>
   );
 };
 
 export default InformationScreen;
 
 const Container = styled.View`
-  width: ${defaultTheme.sizes.windowWidth}px;
   align-self: center;
+  flex: 1;
+  padding: 20px;
 `;
 
 const ErrorText = styled.Text`
   color: ${defaultTheme.colors.error};
   margin-top: ${defaultTheme.sizes.getSpacing(1)}px;
   align-self: flex-start;
+`;
+
+const Label = styled.Text`
+  margin-top: 10px;
+`;
+
+const SafeArea = styled(SafeAreaView)`
+  flex: 1;
+`;
+
+const ScrollView = styled.ScrollView`
+  flex: 1;
 `;

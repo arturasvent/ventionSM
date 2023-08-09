@@ -22,9 +22,9 @@ const initialState: GeneralState = {
     'CM2',
     'CM2 %',
   ],
-  monthlyHours: 168,
-  employerTaxes: 1.77,
-  exangeRate: 1.09,
+  monthlyHours: '168',
+  employerTax: '1.77',
+  exchangeRate: '1.09',
 };
 
 export const generalSlice = createSlice({
@@ -46,8 +46,18 @@ export const generalSlice = createSlice({
     updateEmployee: (state, action) => {
       state.employees[action.payload.index] = action.payload;
     },
+    updateGeneralRates: (state, action) => {
+      state.employerTax = action.payload.employerTaxes;
+      state.monthlyHours = action.payload.monthlyHours;
+      state.exchangeRate = action.payload.exchangeRate;
+    },
   },
 });
 
-export const {addNewEmployee, addDivision, clearEmployee, updateEmployee} =
-  generalSlice.actions;
+export const {
+  addNewEmployee,
+  addDivision,
+  clearEmployee,
+  updateEmployee,
+  updateGeneralRates,
+} = generalSlice.actions;

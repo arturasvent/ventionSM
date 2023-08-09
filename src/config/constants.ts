@@ -9,4 +9,7 @@ export const inputPlaceholders = {
   comission2: 'Comission %2',
   salary: 'Salary',
   positions: 'Positions',
+  monthlyHours: 'Monthly hours',
+  exchangeRate: 'Exchange rate',
+  employerTaxes: 'Employer taxes',
 };

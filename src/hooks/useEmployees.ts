@@ -7,12 +7,14 @@ import {
   addNewEmployee,
   clearEmployee,
   updateEmployee,
+  updateGeneralRates,
 } from '../redux/generalSlice/generalSlice';
 import {RootState} from '../redux/store';
 import {Employee} from '../typescript/redux/generalTypes';
 import {useNavigation} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 import {Alert} from 'react-native';
+import {InformationForm} from '../typescript/information/information';
 
 export const useEmployees = () => {
   const dispatch = useDispatch();
@@ -21,57 +23,68 @@ export const useEmployees = () => {
     (state: RootState) => state.general,
   );
 
-  const handleForm = useCallback((form: EmployeeForm, employee?: Employee) => {
-    const {rate1, rate2, comission1, comission2, salary} = form;
-    const sumComission1 = (168 * rate1 * comission1) / 100;
-    const sumComission2 = 168 * rate2 * comission2;
-    const revenue = ((rate1 + rate2) * 168) / 10;
-    const salaryUSD = Number((salary * 1.09).toFixed(2));
-    const employerTaxes = Number(((salary * 1.09 * 1.77) / 100).toFixed(2));
-    const CM1 = Number(
-      (
-        revenue -
-        employerTaxes -
-        salaryUSD -
-        sumComission1 -
-        sumComission2
-      ).toFixed(2),
-    );
-    const CM1comission = revenue > 0 ? ((CM1 / revenue) * 100).toFixed(2) : 0;
-    const CM2 = Number(
-      (
-        revenue -
-        employerTaxes -
-        salaryUSD -
-        sumComission1 -
-        sumComission2
-      ).toFixed(2),
-    );
-    const CM2comission =
-      revenue > 0 ? ((CM2 / revenue) * 100).toFixed(2) : CM1comission;
-    return {
-      ...form,
-      fullName: `${form.name} ${form.lastName}`,
-      sumComission1,
-      sumComission2,
-      revenue,
-      salaryUSD,
-      employerTaxes,
-      CM1,
-      CM1comission,
-      CM2,
-      CM2comission,
-      id: employee?.id ? employee.id : uuid.v4(),
-    };
-  }, []);
+  const {monthlyHours, employerTax, exchangeRate} = useSelector(
+    (state: RootState) => state.general,
+  );
+
+  const handleFormCalculations = useCallback(
+    (form: EmployeeForm, employee?: Employee) => {
+      const {rate1, rate2, comission1, comission2, salary} = form;
+      const sumComission1 = (Number(monthlyHours) * rate1 * comission1) / 100;
+      const sumComission2 = Number(monthlyHours) * rate2 * comission2;
+      const revenue = ((rate1 + rate2) * Number(monthlyHours)) / 10;
+      const salaryUSD = Number((salary * Number(exchangeRate)).toFixed(2));
+      const employerTaxes = Number(
+        ((salary * Number(exchangeRate) * Number(employerTax)) / 100).toFixed(
+          2,
+        ),
+      );
+      const CM1 = Number(
+        (
+          revenue -
+          employerTaxes -
+          salaryUSD -
+          sumComission1 -
+          sumComission2
+        ).toFixed(2),
+      );
+      const CM1comission = revenue > 0 ? ((CM1 / revenue) * 100).toFixed(2) : 0;
+      const CM2 = Number(
+        (
+          revenue -
+          employerTaxes -
+          salaryUSD -
+          sumComission1 -
+          sumComission2
+        ).toFixed(2),
+      );
+      const CM2comission =
+        revenue > 0 ? ((CM2 / revenue) * 100).toFixed(2) : CM1comission;
+      return {
+        ...form,
+        fullName: `${form.name} ${form.lastName}`,
+        sumComission1,
+        sumComission2,
+        revenue,
+        salaryUSD,
+        employerTaxes,
+        CM1,
+        CM1comission,
+        CM2,
+        CM2comission,
+        id: employee?.id ? employee.id : uuid.v4(),
+      };
+    },
+    [],
+  );
   const addEmployee: SubmitHandler<EmployeeForm> = useCallback(
     form => {
-      const newForm = handleForm(form);
+      const newForm = handleFormCalculations(form);
       dispatch(addNewEmployee(newForm));
       dispatch(addDivision(form.division));
       navigation.goBack();
     },
-    [handleForm, dispatch],
+    [handleFormCalculations, dispatch],
   );
 
   const updateInformation = useCallback((form: EmployeeForm, id: string) => {
@@ -79,7 +92,7 @@ export const useEmployees = () => {
 
     const index = employeesData.findIndex(i => i.id === employeeToUpdate?.id);
 
-    const newForm = handleForm(form, employeeToUpdate);
+    const newForm = handleFormCalculations(form, employeeToUpdate);
 
     dispatch(
       updateEmployee({
@@ -115,9 +128,14 @@ export const useEmployees = () => {
     [employeesData, clearEmployee],
   );
 
+  const updateRates: SubmitHandler<InformationForm> = useCallback(form => {
+    dispatch(updateGeneralRates(form));
+  }, []);
+
   return {
     addEmployee,
     removeEmployee,
     updateInformation,
+    updateRates,
   };
 };

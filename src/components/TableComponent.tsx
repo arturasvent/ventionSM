@@ -84,8 +84,10 @@ const TableComponent = () => {
                   <Cell
                     key={cellIndex}
                     data={cellIndex === 0 ? renderButton(cellData) : cellData}
-                    textStyle={styles.text}
                     width={150}
+                    style={{
+                      alignItems: 'center',
+                    }}
                   />
                 ))}
               </TableWrapper>

@@ -1,5 +1,5 @@
 export interface InformationForm {
-  MonthlyHours: number;
-  ExchangeRate: number;
-  EmployerTaxes: number;
+  monthlyHours: string;
+  exchangeRate: string;
+  employerTaxes: string;
 }

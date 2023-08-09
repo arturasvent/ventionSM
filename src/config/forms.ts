@@ -34,6 +34,12 @@ const RegistrationSchema = yup.object({
   [EFormName.Salary]: string().required(`Required`).trim(),
 });
 
+const InformationSchema = yup.object({
+  [EFormName.MonthlyHours]: string().required(`Required`).trim(),
+  [EFormName.ExchangeRate]: string().required(`Required`).trim(),
+  [EFormName.EmployerTaxes]: string().required(`Required`).trim(),
+});
+
 export const forms: TForms = {
   newEmployee: {
     fields: [
@@ -91,18 +97,16 @@ export const forms: TForms = {
       {
         name: EFormName.MonthlyHours,
         textContentType: 'name',
-        keyboardType: 'number-pad',
       },
       {
         name: EFormName.ExchangeRate,
         textContentType: 'name',
-        keyboardType: 'number-pad',
       },
       {
         name: EFormName.EmployerTaxes,
         textContentType: 'name',
-        keyboardType: 'number-pad',
       },
     ],
+    validationSchema: InformationSchema,
   },
 };

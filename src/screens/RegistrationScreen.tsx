@@ -28,6 +28,7 @@ const RegistrationScreen = ({route, navigation}: Props) => {
   const employeeToUpdate = employeesData.find(
     item => item.fullName === route.params?.name,
   );
+
   const {addEmployee, removeEmployee, updateInformation} = useEmployees();
 
   useEffect(() => {
@@ -127,8 +128,9 @@ const RegistrationScreen = ({route, navigation}: Props) => {
 export default RegistrationScreen;
 
 const Container = styled.View`
-  width: ${defaultTheme.sizes.windowWidth}px;
   align-self: center;
+  flex: 1;
+  width: 400px;
 `;
 
 const ErrorText = styled.Text`

@@ -9,9 +9,9 @@ export enum EFormName {
   Comission2 = 'comission2',
   Salary = 'salary',
   Positions = 'positions',
-  MonthlyHours = 'MonthlyHours',
-  ExchangeRate = 'ExchangeRate',
-  EmployerTaxes = 'EmployerTaxes',
+  MonthlyHours = 'monthlyHours',
+  ExchangeRate = 'exchangeRate',
+  EmployerTaxes = 'employerTaxes',
 }
 
 export enum EFormType {
