@@ -3,9 +3,8 @@ import {SubmitHandler} from 'react-hook-form';
 import {EmployeeForm} from '../typescript/employee/employee';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  addDivision,
   addNewEmployee,
-  clearEmployee,
+  deleteEmployee,
   updateEmployee,
   updateGeneralRates,
 } from '../redux/generalSlice/generalSlice';
@@ -18,9 +17,7 @@ import {Alert} from 'react-native';
 export const useEmployees = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {employees: employeesData} = useSelector(
-    (state: RootState) => state.general,
-  );
+  const allDivisions = useSelector((state: RootState) => state.general.data);
 
   const {monthlyHours, employerTaxesRate, exchangeRate} = useSelector(
     (state: RootState) => state.general,
@@ -81,16 +78,21 @@ export const useEmployees = () => {
     form => {
       const newForm = handleFormCalculations(form);
       dispatch(addNewEmployee(newForm));
-      dispatch(addDivision(form.division));
       navigation.goBack();
     },
     [handleFormCalculations, dispatch],
   );
 
   const updateInformation = useCallback((form: EmployeeForm, id: string) => {
-    const employeeToUpdate = employeesData.find(item => item.id === id);
+    const employeesByDivision = allDivisions[form.division]?.employees;
 
-    const index = employeesData.findIndex(i => i.id === employeeToUpdate?.id);
+    const employeeToUpdate = employeesByDivision.find(
+      (item: Employee) => item.id === id,
+    );
+
+    const index = employeesByDivision.findIndex(
+      (i: Employee) => i.id === employeeToUpdate?.id,
+    );
 
     const newForm = handleFormCalculations(form, employeeToUpdate);
 
@@ -106,8 +108,10 @@ export const useEmployees = () => {
 
   const removeEmployee = useCallback(
     (employee: Employee) => {
-      const updatedEmployees = employeesData.filter(
-        item => item.id !== employee.id,
+      const employeesByDivision = allDivisions[employee.division]?.employees;
+
+      const employeeToDelete = employeesByDivision.find(
+        (item: Employee) => item.id === employee.id,
       );
 
       Alert.alert('Delete employee', 'Are you sure you want to delete?', [
@@ -119,13 +123,13 @@ export const useEmployees = () => {
         {
           text: 'OK',
           onPress: () => {
-            dispatch(clearEmployee(updatedEmployees));
+            dispatch(deleteEmployee(employeeToDelete));
             navigation.goBack();
           },
         },
       ]);
     },
-    [employeesData, clearEmployee],
+    [dispatch],
   );
 
   return {

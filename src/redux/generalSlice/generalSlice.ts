@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {GeneralState} from '../../typescript/redux/generalTypes';
+import {Employee, GeneralState} from '../../typescript/redux/generalTypes';
 
 const initialState: GeneralState = {
   employees: [],
@@ -22,6 +22,7 @@ const initialState: GeneralState = {
     'CM2',
     'CM2 %',
   ],
+  data: {},
   monthlyHours: '168',
   employerTaxesRate: '1.77',
   exchangeRate: '1.09',
@@ -32,19 +33,27 @@ export const generalSlice = createSlice({
   initialState,
   reducers: {
     addNewEmployee: (state, action) => {
-      state.employees = [...state.employees, action.payload];
+      const {division} = action.payload;
+      state.data = {
+        ...state.data,
+        [division]: {
+          employees: state.data[division]
+            ? [...state.data[division].employees, action.payload]
+            : [action.payload],
+        },
+      };
     },
-    addDivision: (state, action) => {
-      const uniq = [...new Set([...state.divisions, action.payload])];
-      const allDivisions = [...new Set(uniq)];
+    deleteEmployee: (state, action) => {
+      const {division} = action.payload;
+      const filteredArray = state.data[division].employees.filter(
+        (employee: Employee) => employee.id !== action.payload.id,
+      );
 
-      state.divisions = allDivisions;
-    },
-    clearEmployee: (state, action) => {
-      state.employees = action.payload;
+      state.data[division].employees = filteredArray;
     },
     updateEmployee: (state, action) => {
-      state.employees[action.payload.index] = action.payload;
+      const {division, index} = action.payload;
+      state.data[division].employees[index] = action.payload;
     },
     updateGeneralRates: (state, action) => {
       state.employerTaxesRate = action.payload.employerTaxesRate;
@@ -52,15 +61,14 @@ export const generalSlice = createSlice({
       state.exchangeRate = action.payload.exchangeRate;
     },
     recalculateEmployeesData: (state, action) => {
-      state.employees = action.payload;
+      state.data = action.payload;
     },
   },
 });
 
 export const {
   addNewEmployee,
-  addDivision,
-  clearEmployee,
+  deleteEmployee,
   updateEmployee,
   updateGeneralRates,
   recalculateEmployeesData,

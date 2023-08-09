@@ -4,6 +4,8 @@ import TableComponent from '../components/TableComponent';
 import {styled} from 'styled-components/native';
 import {defaultTheme} from '../theme';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
+import {RootState} from '../redux/store';
 
 const HomeScreen = () => {
   return (
