@@ -4,14 +4,14 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AppScreen} from '../typescript/static/AppScreens';
 import HomeScreen from '../screens/HomeScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
-import InformationScreen from '../screens/InformationScreen';
+import GeneralRatesScreen from '../screens/GeneralRatesScreen';
 
 export type RootStackParamList = {
   [AppScreen.Home]: {};
   [AppScreen.Registration]: {
     name: string;
   };
-  [AppScreen.Information]: {};
+  [AppScreen.GeneralRates]: {};
 };
 
 export const AppNavigation = () => {
@@ -34,9 +34,9 @@ export const AppNavigation = () => {
           options={{orientation: 'landscape'}}
         />
         <Stack.Screen
-          name={AppScreen.Information}
-          component={InformationScreen}
-          options={{orientation: 'landscape', title: 'Information'}}
+          name={AppScreen.GeneralRates}
+          component={GeneralRatesScreen}
+          options={{orientation: 'landscape', title: 'GeneralRates'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -14,7 +14,7 @@ import {Employee} from '../typescript/redux/generalTypes';
 import {useNavigation} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 import {Alert} from 'react-native';
-import {InformationForm} from '../typescript/information/information';
+import {GeneralRatesForm} from '../typescript/generalRates/generalRates';
 
 export const useEmployees = () => {
   const dispatch = useDispatch();
@@ -128,7 +128,7 @@ export const useEmployees = () => {
     [employeesData, clearEmployee],
   );
 
-  const updateRates: SubmitHandler<InformationForm> = useCallback(form => {
+  const updateRates: SubmitHandler<GeneralRatesForm> = useCallback(form => {
     dispatch(updateGeneralRates(form));
   }, []);
 

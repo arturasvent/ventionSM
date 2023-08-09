@@ -3,7 +3,7 @@ import {EFormName, EFormType} from '../typescript/static/EForm';
 import {EmployeeForm} from '../typescript/employee/employee';
 import {string} from 'yup';
 import * as yup from 'yup';
-import {InformationForm} from '../typescript/information/information';
+import {GeneralRatesForm} from '../typescript/generalRates/generalRates';
 
 export type FieldType<Values, T = TextInputProps> = T & {
   name: keyof Values;
@@ -19,7 +19,7 @@ type FormType<T> = {
 
 interface TForms {
   newEmployee: FormType<EmployeeForm>;
-  generalInformation: FormType<InformationForm>;
+  generalRates: FormType<GeneralRatesForm>;
 }
 
 const RegistrationSchema = yup.object({
@@ -34,7 +34,7 @@ const RegistrationSchema = yup.object({
   [EFormName.Salary]: string().required(`Required`).trim(),
 });
 
-const InformationSchema = yup.object({
+const GeneralRatesSchema = yup.object({
   [EFormName.MonthlyHours]: string().required(`Required`).trim(),
   [EFormName.ExchangeRate]: string().required(`Required`).trim(),
   [EFormName.EmployerTaxes]: string().required(`Required`).trim(),
@@ -92,7 +92,7 @@ export const forms: TForms = {
     ],
     validationSchema: RegistrationSchema,
   },
-  generalInformation: {
+  generalRates: {
     fields: [
       {
         name: EFormName.MonthlyHours,
@@ -107,6 +107,6 @@ export const forms: TForms = {
         textContentType: 'name',
       },
     ],
-    validationSchema: InformationSchema,
+    validationSchema: GeneralRatesSchema,
   },
 };

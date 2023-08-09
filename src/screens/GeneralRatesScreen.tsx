@@ -4,7 +4,7 @@ import {RootState} from '../redux/store';
 import {styled} from 'styled-components/native';
 import {defaultTheme} from '../theme';
 import {FieldType, forms} from '../config/forms';
-import {InformationForm} from '../typescript/information/information';
+import {GeneralRatesForm} from '../typescript/generalRates/generalRates';
 import {Controller, useForm} from 'react-hook-form';
 import MainInput from '../components/MainInput';
 import {inputPlaceholders} from '../config/constants';
@@ -14,7 +14,7 @@ import MainButton from '../components/MainButton';
 import {useEmployees} from '../hooks/useEmployees';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const InformationScreen = () => {
+const GeneralRatesScreen = () => {
   const {monthlyHours, employerTax, exchangeRate} = useSelector(
     (state: RootState) => state.general,
   );
@@ -30,11 +30,11 @@ const InformationScreen = () => {
       [EFormName.ExchangeRate]: exchangeRate,
       [EFormName.EmployerTaxes]: employerTax,
     },
-    resolver: yupResolver(forms.generalInformation.validationSchema),
+    resolver: yupResolver(forms.generalRates.validationSchema),
   });
 
   const renderInput = useCallback(
-    (form: FieldType<InformationForm>) => {
+    (form: FieldType<GeneralRatesForm>) => {
       return (
         <Controller
           key={form.name}
@@ -69,7 +69,7 @@ const InformationScreen = () => {
     <SafeArea edges={['bottom']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Container>
-          <>{forms.generalInformation.fields.map(renderInput)}</>
+          <>{forms.generalRates.fields.map(renderInput)}</>
           <MainButton label="Update" onPress={handleSubmit(updateRates)} />
         </Container>
       </ScrollView>
@@ -77,12 +77,12 @@ const InformationScreen = () => {
   );
 };
 
-export default InformationScreen;
+export default GeneralRatesScreen;
 
 const Container = styled.View`
   align-self: center;
   flex: 1;
-  padding: 20px;
+  width: 400px;
 `;
 
 const ErrorText = styled.Text`

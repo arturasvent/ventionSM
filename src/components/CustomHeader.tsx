@@ -10,7 +10,7 @@ const CustomHeader = () => {
   return (
     <Container>
       <ImageContainer
-        onPress={() => navigation.navigate(AppScreen.Information)}>
+        onPress={() => navigation.navigate(AppScreen.GeneralRates)}>
         <Image source={icons.info} />
       </ImageContainer>
       <Text>Home</Text>
