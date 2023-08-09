@@ -11,5 +11,5 @@ export const inputPlaceholders = {
   positions: 'Positions',
   monthlyHours: 'Monthly hours',
   exchangeRate: 'Exchange rate',
-  employerTaxes: 'Employer taxes',
+  employerTaxesRate: 'Employer taxes',
 };

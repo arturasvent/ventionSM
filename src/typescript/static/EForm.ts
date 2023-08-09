@@ -11,7 +11,7 @@ export enum EFormName {
   Positions = 'positions',
   MonthlyHours = 'monthlyHours',
   ExchangeRate = 'exchangeRate',
-  EmployerTaxes = 'employerTaxes',
+  EmployerTaxesRate = 'employerTaxesRate',
 }
 
 export enum EFormType {

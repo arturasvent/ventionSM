@@ -11,14 +11,14 @@ import {inputPlaceholders} from '../config/constants';
 import {EFormName} from '../typescript/static/EForm';
 import {yupResolver} from '@hookform/resolvers/yup';
 import MainButton from '../components/MainButton';
-import {useEmployees} from '../hooks/useEmployees';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useGeneralRates} from '../hooks/useGeneralRates';
 
 const GeneralRatesScreen = () => {
-  const {monthlyHours, employerTax, exchangeRate} = useSelector(
+  const {monthlyHours, employerTaxesRate, exchangeRate} = useSelector(
     (state: RootState) => state.general,
   );
-  const {updateRates} = useEmployees();
+  const {updateRates} = useGeneralRates();
 
   const {
     control,
@@ -28,7 +28,7 @@ const GeneralRatesScreen = () => {
     defaultValues: {
       [EFormName.MonthlyHours]: monthlyHours,
       [EFormName.ExchangeRate]: exchangeRate,
-      [EFormName.EmployerTaxes]: employerTax,
+      [EFormName.EmployerTaxesRate]: employerTaxesRate,
     },
     resolver: yupResolver(forms.generalRates.validationSchema),
   });

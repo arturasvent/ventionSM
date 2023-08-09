@@ -14,7 +14,6 @@ import {Employee} from '../typescript/redux/generalTypes';
 import {useNavigation} from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 import {Alert} from 'react-native';
-import {GeneralRatesForm} from '../typescript/generalRates/generalRates';
 
 export const useEmployees = () => {
   const dispatch = useDispatch();
@@ -23,7 +22,7 @@ export const useEmployees = () => {
     (state: RootState) => state.general,
   );
 
-  const {monthlyHours, employerTax, exchangeRate} = useSelector(
+  const {monthlyHours, employerTaxesRate, exchangeRate} = useSelector(
     (state: RootState) => state.general,
   );
 
@@ -35,9 +34,10 @@ export const useEmployees = () => {
       const revenue = ((rate1 + rate2) * Number(monthlyHours)) / 10;
       const salaryUSD = Number((salary * Number(exchangeRate)).toFixed(2));
       const employerTaxes = Number(
-        ((salary * Number(exchangeRate) * Number(employerTax)) / 100).toFixed(
-          2,
-        ),
+        (
+          (salary * Number(exchangeRate) * Number(employerTaxesRate)) /
+          100
+        ).toFixed(2),
       );
       const CM1 = Number(
         (
@@ -128,14 +128,9 @@ export const useEmployees = () => {
     [employeesData, clearEmployee],
   );
 
-  const updateRates: SubmitHandler<GeneralRatesForm> = useCallback(form => {
-    dispatch(updateGeneralRates(form));
-  }, []);
-
   return {
     addEmployee,
     removeEmployee,
     updateInformation,
-    updateRates,
   };
 };

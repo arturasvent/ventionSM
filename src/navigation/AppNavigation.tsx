@@ -36,7 +36,7 @@ export const AppNavigation = () => {
         <Stack.Screen
           name={AppScreen.GeneralRates}
           component={GeneralRatesScreen}
-          options={{orientation: 'landscape', title: 'GeneralRates'}}
+          options={{orientation: 'landscape', title: 'General rates'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

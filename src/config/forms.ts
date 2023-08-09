@@ -37,7 +37,7 @@ const RegistrationSchema = yup.object({
 const GeneralRatesSchema = yup.object({
   [EFormName.MonthlyHours]: string().required(`Required`).trim(),
   [EFormName.ExchangeRate]: string().required(`Required`).trim(),
-  [EFormName.EmployerTaxes]: string().required(`Required`).trim(),
+  [EFormName.EmployerTaxesRate]: string().required(`Required`).trim(),
 });
 
 export const forms: TForms = {
@@ -103,7 +103,7 @@ export const forms: TForms = {
         textContentType: 'name',
       },
       {
-        name: EFormName.EmployerTaxes,
+        name: EFormName.EmployerTaxesRate,
         textContentType: 'name',
       },
     ],

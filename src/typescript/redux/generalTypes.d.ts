@@ -3,7 +3,7 @@ export interface GeneralState {
   divisions: any;
   tableHead: string[];
   monthlyHours: string;
-  employerTax: string;
+  employerTaxesRate: string;
   exchangeRate: string;
 }
 

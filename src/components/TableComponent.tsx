@@ -1,12 +1,6 @@
 import React, {useCallback} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {
-  Table,
-  Row,
-  Rows,
-  Cell,
-  TableWrapper,
-} from 'react-native-table-component';
+import {Table, Row, Cell, TableWrapper} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import styled from 'styled-components/native';
