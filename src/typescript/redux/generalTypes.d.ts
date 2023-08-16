@@ -5,6 +5,7 @@ export interface GeneralState {
   monthlyHours: string;
   employerTaxesRate: string;
   exchangeRate: string;
+  data: any;
 }
 
 export interface Employee {

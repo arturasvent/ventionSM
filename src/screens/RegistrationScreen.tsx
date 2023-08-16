@@ -17,16 +17,17 @@ import {AppScreen} from '../typescript/static/AppScreens';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Employee} from '../typescript/redux/generalTypes';
 
 interface Props
   extends NativeStackScreenProps<RootStackParamList, AppScreen.Registration> {}
 
 const RegistrationScreen = ({route, navigation}: Props) => {
   const employeesData = useSelector(
-    (state: RootState) => state.general.employees,
+    (state: RootState) => state.general.data[route.params?.division]?.employees,
   );
-  const employeeToUpdate = employeesData.find(
-    item => item.fullName === route.params?.name,
+  const employeeToUpdate = employeesData?.find(
+    (item: Employee) => item.fullName === route.params?.name,
   );
 
   const {addEmployee, removeEmployee, updateInformation} = useEmployees();

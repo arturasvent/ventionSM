@@ -1,45 +1,52 @@
 import React, {useCallback} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {Table, Row, Cell, TableWrapper} from 'react-native-table-component';
+import {
+  Table,
+  Row,
+  Cell,
+  TableWrapper,
+  RowProps,
+} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import styled from 'styled-components/native';
 import {defaultTheme} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {AppScreen} from '../typescript/static/AppScreens';
+import {Employee} from '../typescript/redux/generalTypes';
 
 const TableComponent = () => {
-  const employeesData = useSelector(
-    (state: RootState) => state.general.employees,
-  );
-  const {divisions, tableHead} = useSelector(
-    (state: RootState) => state.general,
-  );
+  const data = useSelector((state: RootState) => state.general.data);
+
+  const {tableHead} = useSelector((state: RootState) => state.general);
 
   const navigation = useNavigation<any>();
 
   const handleOnPress = useCallback(
-    (name: string | number) => {
-      navigation.navigate(AppScreen.Registration, {name});
+    (name: string | number, division: string) => {
+      navigation.navigate(AppScreen.Registration, {name, division});
     },
-    [employeesData],
+    [data],
   );
 
-  const renderButton = useCallback((data: string | number) => {
-    return (
-      <ButtonContainer onPress={() => handleOnPress(data)}>
-        <EmployeeName>{data}</EmployeeName>
-      </ButtonContainer>
-    );
-  }, []);
+  const renderButton = useCallback(
+    (data: string | number, division: string) => {
+      return (
+        <ButtonContainer onPress={() => handleOnPress(data, division)}>
+          <EmployeeName>{data}</EmployeeName>
+        </ButtonContainer>
+      );
+    },
+    [],
+  );
 
-  const renderItem = useCallback(
-    ({item}: any) => {
-      const filteredEmployees = employeesData.filter(
-        employee => employee.division === item,
+  const renderTableData = useCallback(
+    (division: string) => {
+      const filteredEmployees = data[division]?.employees?.map(
+        (item: Employee[]) => item,
       );
 
-      const mappedArray = filteredEmployees.map(obj => [
+      const mappedArray = filteredEmployees?.map((obj: Employee) => [
         obj.fullName,
         obj.jobPosition,
         obj.rate1,
@@ -59,48 +66,51 @@ const TableComponent = () => {
       ]);
 
       return (
-        <TableContainer>
-          <DivisionTitle>{item}</DivisionTitle>
-          <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
-            <Row
-              data={tableHead}
-              style={styles.HeadStyle}
-              textStyle={styles.TableText}
-              widthArr={[
-                150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
-                150, 150, 150,
-              ]}
-            />
-
-            {mappedArray.map((rowData, rowIndex) => (
-              <TableWrapper key={rowIndex} style={styles.row}>
-                {rowData.map((cellData, cellIndex) => (
-                  <Cell
-                    key={cellIndex}
-                    data={cellIndex === 0 ? renderButton(cellData) : cellData}
-                    width={150}
-                    style={{
-                      alignItems: 'center',
-                    }}
-                  />
-                ))}
-              </TableWrapper>
-            ))}
-          </Table>
-        </TableContainer>
+        filteredEmployees.length > 0 && (
+          <TableContainer>
+            <DivisionTitle>{division}</DivisionTitle>
+            <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
+              <Row
+                data={tableHead}
+                style={styles.HeadStyle}
+                textStyle={styles.TableText}
+                widthArr={[
+                  150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
+                  150, 150, 150, 150,
+                ]}
+              />
+              {mappedArray?.map(
+                (rowData: string[] | number[], rowIndex: number) => (
+                  <TableWrapper key={rowIndex} style={styles.row}>
+                    {rowData?.map((cellData, cellIndex) => (
+                      <Cell
+                        key={cellIndex}
+                        data={
+                          cellIndex === 0
+                            ? renderButton(cellData, division)
+                            : cellData
+                        }
+                        width={150}
+                        style={{
+                          alignItems: 'center',
+                        }}
+                      />
+                    ))}
+                  </TableWrapper>
+                ),
+              )}
+            </Table>
+          </TableContainer>
+        )
       );
     },
-    [employeesData],
+    [data],
   );
 
   return (
     <Wrapper>
       <Container>
-        <FlatList
-          data={divisions}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
+        <>{Object.keys(data).map(renderTableData)}</>
       </Container>
     </Wrapper>
   );
@@ -127,7 +137,7 @@ const styles = StyleSheet.create({
   btnText: {textAlign: 'center', color: '#fff'},
 });
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   padding-horizontal: ${defaultTheme.sizes.getSpacing(5)}px;
   background-color: ${defaultTheme.colors.background};

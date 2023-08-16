@@ -10,6 +10,7 @@ export type RootStackParamList = {
   [AppScreen.Home]: {};
   [AppScreen.Registration]: {
     name: string;
+    division: string;
   };
   [AppScreen.GeneralRates]: {};
 };
