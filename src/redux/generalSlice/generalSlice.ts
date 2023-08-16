@@ -2,8 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 import {Employee, GeneralState} from '../../typescript/redux/generalTypes';
 
 const initialState: GeneralState = {
-  employees: [],
-  divisions: [],
   tableHead: [
     'Name',
     'Job title',
@@ -37,7 +35,7 @@ export const generalSlice = createSlice({
       const divisionParts = action.payload.division.split('.');
       let currentNode = state.testDivisions;
 
-      divisionParts.forEach(part => {
+      divisionParts.forEach((part: string) => {
         if (!currentNode[part]) {
           currentNode[part] = {
             employees: [],
