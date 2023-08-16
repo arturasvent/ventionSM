@@ -17,6 +17,8 @@ import {Employee} from '../typescript/redux/generalTypes';
 
 const TableComponent = () => {
   const data = useSelector((state: RootState) => state.general.data);
+  const divs = useSelector((state: RootState) => state.general.testDivisions);
+  console.log(divs);
 
   const {tableHead} = useSelector((state: RootState) => state.general);
 
