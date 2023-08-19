@@ -78,7 +78,7 @@ export const useEmployees = () => {
     form => {
       const newForm = handleFormCalculations(form);
       dispatch(addNewEmployee(newForm));
-      // navigation.goBack();
+      navigation.goBack();
     },
     [handleFormCalculations, dispatch],
   );
