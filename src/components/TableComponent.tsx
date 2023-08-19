@@ -1,12 +1,6 @@
 import React, {useCallback} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {
-  Table,
-  Row,
-  Cell,
-  TableWrapper,
-  RowProps,
-} from 'react-native-table-component';
+import {StyleSheet, Text} from 'react-native';
+import {Table, Row} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import styled from 'styled-components/native';
@@ -25,145 +19,54 @@ const TableComponent = () => {
   const navigation = useNavigation<any>();
 
   const handleOnPress = useCallback(
-    (name: string | number, division: string) => {
-      navigation.navigate(AppScreen.Registration, {name, division});
+    (employee: Employee) => {
+      navigation.navigate(AppScreen.Registration, {employee});
     },
     [data],
   );
 
-  const renderButton = useCallback(
-    (data: string | number, division: string) => {
-      return (
-        <ButtonContainer onPress={() => handleOnPress(data, division)}>
-          <EmployeeName>{data}</EmployeeName>
-        </ButtonContainer>
-      );
-    },
-    [],
-  );
-
-  const renderTableData = useCallback(
-    (division: string) => {
-      const filteredEmployees = data[division]?.employees?.map(
-        (item: Employee[]) => item,
-      );
-
-      const mappedArray = filteredEmployees?.map((obj: Employee) => [
-        obj.fullName,
-        obj.jobPosition,
-        obj.rate1,
-        obj.comission1,
-        obj.sumComission1,
-        obj.rate2,
-        obj.comission2,
-        obj.sumComission2,
-        obj.revenue,
-        obj.salary,
-        obj.salaryUSD,
-        obj.employerTaxes,
-        obj.CM1,
-        obj.CM1comission,
-        obj.CM2,
-        obj.CM2comission,
-      ]);
-
-      return (
-        filteredEmployees.length > 0 && (
-          <TableContainer>
-            <DivisionTitle>{division}</DivisionTitle>
-            <Table borderStyle={{borderWidth: 1, borderColor: '#D7CAA5'}}>
-              <Row
-                data={tableHead}
-                style={styles.HeadStyle}
-                textStyle={styles.TableText}
-                widthArr={[
-                  150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
-                  150, 150, 150, 150,
-                ]}
-              />
-              {mappedArray?.map(
-                (rowData: string[] | number[], rowIndex: number) => (
-                  <TableWrapper key={rowIndex} style={styles.row}>
-                    {rowData?.map((cellData, cellIndex) => (
-                      <Cell
-                        key={cellIndex}
-                        data={
-                          cellIndex === 0
-                            ? renderButton(cellData, division)
-                            : cellData
-                        }
-                        width={150}
-                        style={{
-                          alignItems: 'center',
-                        }}
-                      />
-                    ))}
-                  </TableWrapper>
-                ),
-              )}
-            </Table>
-          </TableContainer>
-        )
-      );
-    },
-    [data],
-  );
-
-  const renderEmployees = items => {
-    const mappedArray = items?.map((obj: Employee) => [
-      obj.fullName,
-      obj.jobPosition,
-      obj.rate1,
-      obj.comission1,
-      obj.sumComission1,
-      obj.rate2,
-      obj.comission2,
-      obj.sumComission2,
-      obj.revenue,
-      obj.salary,
-      obj.salaryUSD,
-      obj.employerTaxes,
-      obj.CM1,
-      obj.CM1comission,
-      obj.CM2,
-      obj.CM2comission,
-    ]);
-
-    return mappedArray?.map(
-      (rowData: string[] | number[], rowIndex: number) => (
-        <>
-          {/* <TableWrapper key={rowIndex} style={styles.row}>
-            {rowData?.map((cellData, cellIndex) => (
-              <Cell
-                key={cellIndex}
-                data={
-                  cellIndex === 0 ? renderButton(cellData, 'DIV1') : cellData
-                }
-                width={150}
-                style={{
-                  alignItems: 'center',
-                  borderWidth: 0,
-                  borderColor: 'white',
-                }}
-              />
-            ))}
-          </TableWrapper> */}
-
-          <View
-            style={{
-              backgroundColor: 'red',
-              width: '100%',
-              borderWidth: 1,
-              borderColor: 'red',
-              height: 20,
-            }}>
-            <Text>
-              {/* {` Total calculations of LT.${currentDivisionName} division`}{' '} */}
-            </Text>
-          </View>
-        </>
-      ),
+  const renderButton = useCallback((employee: Employee) => {
+    return (
+      <ButtonContainer onPress={() => handleOnPress(employee)}>
+        <EmployeeName>{employee.fullName}</EmployeeName>
+      </ButtonContainer>
     );
+  }, []);
+
+  const DivisionTable = ({divisionName, employees}) => {
+    return (
+      <TableContainer>
+        <DivisionTitle>{`LT.${divisionName}`}</DivisionTitle>
+        <Table>
+          <Row
+            data={tableHead}
+            style={styles.HeadStyle}
+            textStyle={styles.TableText}
+            widthArr={[
+              150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
+              150, 150, 150,
+            ]}
+          />
+          {employees && renderEmployees(employees)}
+        </Table>
+      </TableContainer>
+    );
+  };
+
+  const renderEmployees = (array: Employee[]) => {
+    return array.map((employee: Employee) => {
+      return (
+        <ContainerTest>
+          {employee.rowData.map((data: string, index: number) => {
+            return (
+              <CellTest>
+                {index === 0 ? renderButton(employee) : <Text>{data}</Text>}
+              </CellTest>
+            );
+          })}
+        </ContainerTest>
+      );
+    });
   };
 
   const renderSubdivisions = (subdivisions, divisionName = '') => {
@@ -177,37 +80,16 @@ const TableComponent = () => {
 
         if (!isArray(subdivisions[key])) {
           views.push(
-            <TableContainer>
-              <DivisionTitle>{`LT.${currentDivisionName}`}</DivisionTitle>
-              <Table borderStyle={{borderWidth: 1, borderColor: 'white'}}>
-                <Row
-                  data={tableHead}
-                  style={styles.HeadStyle}
-                  textStyle={styles.TableText}
-                  widthArr={[
-                    150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150,
-                    150, 150, 150, 150,
-                  ]}
-                />
-                {subdivision.employees &&
-                  renderEmployees(subdivision.employees)}
-                {subdivision.hasOwnProperty('employees') &&
-                  renderSubdivisions(subdivision, currentDivisionName)}
-                <View
-                  style={{
-                    backgroundColor: 'red',
-                    width: '100%',
-                    borderWidth: 1,
-                    borderColor: 'red',
-                    height: 20,
-                  }}>
-                  <Text>
-                    {` Total calculations of LT.${currentDivisionName} division`}{' '}
-                  </Text>
-                </View>
-              </Table>
-            </TableContainer>,
+            <DivisionTable
+              key={currentDivisionName}
+              divisionName={currentDivisionName}
+              employees={subdivision.employees}
+            />,
           );
+
+          if (subdivision.hasOwnProperty('employees')) {
+            views.push(renderSubdivisions(subdivision, currentDivisionName));
+          }
         }
       }
     }
@@ -216,7 +98,9 @@ const TableComponent = () => {
 
   return (
     <Wrapper>
-      <Container>{renderSubdivisions(divs?.LT)}</Container>
+      <Container showsVerticalScrollIndicator={false}>
+        {renderSubdivisions(divs?.LT)}
+      </Container>
     </Wrapper>
   );
 };
@@ -229,23 +113,28 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     backgroundColor: '#A5A335',
     borderWidth: 0,
-    borderColor: 'white',
+    borderColor: '#A5A335',
   },
   TableText: {
     fontSize: 12,
     margin: 5,
     textAlign: 'center',
     borderWidth: 0,
-    borderColor: 'white',
+    borderColor: '#A5A335',
   },
 
   row: {
     flexDirection: 'row',
     backgroundColor: defaultTheme.colors.background,
     borderWidth: 0,
-    borderColor: 'white',
+    borderColor: '#A5A335',
   },
-  text: {margin: 5, textAlign: 'center', borderWidth: 0, borderColor: 'white'},
+  text: {
+    margin: 5,
+    textAlign: 'center',
+    borderWidth: 0,
+    borderColor: '#A5A335',
+  },
 
   btn: {width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2},
   btnText: {textAlign: 'center', color: '#fff'},
@@ -277,4 +166,23 @@ const EmployeeName = styled.Text`
   color: ${defaultTheme.colors.employee};
   margin: 5px;
   text-align: center;
+`;
+
+const ContainerTest = styled.View`
+  height: 50px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const CellTest = styled.View`
+  width: 150px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-color: #a5a335;
+  padding: 3px;
 `;

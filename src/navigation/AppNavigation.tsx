@@ -5,12 +5,12 @@ import {AppScreen} from '../typescript/static/AppScreens';
 import HomeScreen from '../screens/HomeScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 import GeneralRatesScreen from '../screens/GeneralRatesScreen';
+import {Employee} from '../typescript/redux/generalTypes';
 
 export type RootStackParamList = {
   [AppScreen.Home]: {};
   [AppScreen.Registration]: {
-    name: string;
-    division: string;
+    employee: Employee;
   };
   [AppScreen.GeneralRates]: {};
 };

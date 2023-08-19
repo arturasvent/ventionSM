@@ -24,12 +24,7 @@ interface Props
   extends NativeStackScreenProps<RootStackParamList, AppScreen.Registration> {}
 
 const RegistrationScreen = ({route, navigation}: Props) => {
-  const employeesData = useSelector(
-    (state: RootState) => state.general.data[route.params?.division]?.employees,
-  );
-  const employeeToUpdate = employeesData?.find(
-    (item: Employee) => item.fullName === route.params?.name,
-  );
+  const employeeToUpdate = route.params?.employee;
 
   const {addEmployee, removeEmployee, updateInformation} = useEmployees();
 
@@ -45,33 +40,33 @@ const RegistrationScreen = ({route, navigation}: Props) => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      // [EFormName.Name]: employeeToUpdate ? employeeToUpdate.name : '',
-      // [EFormName.LastName]: employeeToUpdate ? employeeToUpdate.lastName : '',
-      // [EFormName.Comission1]: employeeToUpdate
-      //   ? employeeToUpdate.comission1
-      //   : '',
-      // [EFormName.Comission2]: employeeToUpdate
-      //   ? employeeToUpdate.comission2
-      //   : '',
-      // [EFormName.Division]: employeeToUpdate ? employeeToUpdate.division : '',
-      // [EFormName.JobPosition]: employeeToUpdate
-      //   ? employeeToUpdate.jobPosition
-      //   : '',
-      // [EFormName.Positions]: employeeToUpdate ? employeeToUpdate.positions : '',
-      // [EFormName.Rate1]: employeeToUpdate ? employeeToUpdate.rate1 : '',
-      // [EFormName.Rate2]: employeeToUpdate ? employeeToUpdate.rate2 : '',
-      // [EFormName.Salary]: employeeToUpdate ? employeeToUpdate.salary : '',
-
-      [EFormName.Name]: faker.person.firstName('male'),
-      [EFormName.LastName]: faker.person.lastName('male'),
-      [EFormName.Comission1]: faker.number.int({min: 10, max: 100}).toString(),
-      [EFormName.Comission2]: faker.number.int({min: 10, max: 100}).toString(),
+      [EFormName.Name]: employeeToUpdate ? employeeToUpdate.name : '',
+      [EFormName.LastName]: employeeToUpdate ? employeeToUpdate.lastName : '',
+      [EFormName.Comission1]: employeeToUpdate
+        ? employeeToUpdate.comission1
+        : '',
+      [EFormName.Comission2]: employeeToUpdate
+        ? employeeToUpdate.comission2
+        : '',
       [EFormName.Division]: employeeToUpdate ? employeeToUpdate.division : '',
-      [EFormName.JobPosition]: faker.person.jobTitle(),
-      [EFormName.Positions]: faker.number.int({min: 10, max: 100}),
-      [EFormName.Rate1]: faker.number.int({min: 10, max: 100}).toString(),
-      [EFormName.Rate2]: faker.number.int({min: 10, max: 100}).toString(),
-      [EFormName.Salary]: faker.number.int({min: 10, max: 100}).toString(),
+      [EFormName.JobPosition]: employeeToUpdate
+        ? employeeToUpdate.jobPosition
+        : '',
+      [EFormName.Positions]: employeeToUpdate ? employeeToUpdate.positions : '',
+      [EFormName.Rate1]: employeeToUpdate ? employeeToUpdate.rate1 : '',
+      [EFormName.Rate2]: employeeToUpdate ? employeeToUpdate.rate2 : '',
+      [EFormName.Salary]: employeeToUpdate ? employeeToUpdate.salary : '',
+
+      // [EFormName.Name]: faker.person.firstName('male'),
+      // [EFormName.LastName]: faker.person.lastName('male'),
+      // [EFormName.Comission1]: faker.number.int({min: 10, max: 100}).toString(),
+      // [EFormName.Comission2]: faker.number.int({min: 10, max: 100}).toString(),
+      // [EFormName.Division]: employeeToUpdate ? employeeToUpdate.division : '',
+      // [EFormName.JobPosition]: faker.person.jobTitle(),
+      // [EFormName.Positions]: faker.number.int({min: 10, max: 100}),
+      // [EFormName.Rate1]: faker.number.int({min: 10, max: 100}).toString(),
+      // [EFormName.Rate2]: faker.number.int({min: 10, max: 100}).toString(),
+      // [EFormName.Salary]: faker.number.int({min: 10, max: 100}).toString(),
     },
     resolver: yupResolver(forms.newEmployee.validationSchema),
   });

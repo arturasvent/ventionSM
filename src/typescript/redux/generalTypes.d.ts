@@ -30,4 +30,5 @@ export interface Employee {
   name: number;
   lastName: string;
   id: string;
+  rowData: string[];
 }
