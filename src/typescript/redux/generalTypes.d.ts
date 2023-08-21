@@ -4,7 +4,6 @@ export interface GeneralState {
   employerTaxesRate: string;
   exchangeRate: string;
   data: any;
-  testDivisions: any;
 }
 
 export interface Employee {

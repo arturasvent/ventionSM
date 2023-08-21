@@ -12,7 +12,7 @@ import {isArray} from 'lodash';
 
 const TableComponent = () => {
   const data = useSelector((state: RootState) => state.general.data);
-  const divs = useSelector((state: RootState) => state.general.testDivisions);
+  const divs = useSelector((state: RootState) => state.general.data);
 
   const {tableHead} = useSelector((state: RootState) => state.general);
 
@@ -53,7 +53,7 @@ const TableComponent = () => {
     );
   };
 
-  const renderEmployees = (array: Employee[]) => {
+  const renderEmployees = useCallback((array: Employee[]) => {
     return array.map((employee: Employee) => {
       return (
         <ContainerTest>
@@ -67,7 +67,7 @@ const TableComponent = () => {
         </ContainerTest>
       );
     });
-  };
+  }, []);
 
   const renderSubdivisions = (subdivisions, divisionName = '') => {
     const views = [];

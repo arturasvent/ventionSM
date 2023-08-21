@@ -20,11 +20,10 @@ const initialState: GeneralState = {
     'CM2',
     'CM2 %',
   ],
-  data: {},
   monthlyHours: '168',
   employerTaxesRate: '1.77',
   exchangeRate: '1.09',
-  testDivisions: {},
+  data: {},
 };
 
 export const generalSlice = createSlice({
@@ -33,11 +32,12 @@ export const generalSlice = createSlice({
   reducers: {
     addNewEmployee: (state, action) => {
       const divisionParts = action.payload.division.split('.');
-      let currentNode = state.testDivisions;
+      let currentNode = state.data;
 
       divisionParts.forEach((part: string) => {
         if (!currentNode[part]) {
           currentNode[part] = {
+            test: '',
             employees: [],
           };
         }
@@ -55,10 +55,7 @@ export const generalSlice = createSlice({
 
       state.data[division].employees = filteredArray;
     },
-    updateEmployee: (state, action) => {
-      const {division, index} = action.payload;
-      state.data[division].employees[index] = action.payload;
-    },
+    updateEmployee: (state, action) => {},
     updateGeneralRates: (state, action) => {
       state.employerTaxesRate = action.payload.employerTaxesRate;
       state.monthlyHours = action.payload.monthlyHours;

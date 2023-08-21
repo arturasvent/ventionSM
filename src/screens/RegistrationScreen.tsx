@@ -115,8 +115,7 @@ const RegistrationScreen = ({route, navigation}: Props) => {
             onPress={handleSubmit(
               //@ts-ignore
               employeeToUpdate
-                ? data =>
-                    updateInformation(data as EmployeeForm, employeeToUpdate.id)
+                ? data => updateInformation(data, employeeToUpdate)
                 : addEmployee,
             )}
           />

@@ -23,7 +23,7 @@ export const useEmployees = () => {
     (state: RootState) => state.general,
   );
 
-  const handleFormCalculations = useCallback(
+  const handleEmployeeForm = useCallback(
     (form: EmployeeForm, employee?: Employee) => {
       const {rate1, rate2, comission1, comission2, salary} = form;
       const sumComission1 = (Number(monthlyHours) * rate1 * comission1) / 100;
@@ -94,43 +94,51 @@ export const useEmployees = () => {
   );
   const addEmployee: SubmitHandler<EmployeeForm> = useCallback(
     form => {
-      const newForm = handleFormCalculations(form);
+      const newForm = handleEmployeeForm(form);
       dispatch(addNewEmployee(newForm));
       navigation.goBack();
     },
-    [handleFormCalculations, dispatch],
+    [handleEmployeeForm, dispatch],
   );
 
-  const updateInformation = useCallback((form: EmployeeForm, id: string) => {
-    const employeesByDivision = allDivisions[form.division]?.employees;
+  const updateInformation = useCallback(
+    (form: EmployeeForm, employee: Employee) => {
+      const newForm = handleEmployeeForm(form, employee);
 
-    const employeeToUpdate = employeesByDivision.find(
-      (item: Employee) => item.id === id,
-    );
+      // const search = (divs: any) => {
+      //   for (const key in divs) {
+      //     if (key !== 'employees') {
+      //       search(divs[key]);
 
-    const index = employeesByDivision.findIndex(
-      (i: Employee) => i.id === employeeToUpdate?.id,
-    );
+      //       const indexToReplace = divs[key].employees.findIndex(
+      //         (item: Employee) => item.id === employee.id,
+      //       );
 
-    const newForm = handleFormCalculations(form, employeeToUpdate);
+      //       console.log(indexToReplace);
+      //     }
+      //   }
+      // };
 
-    dispatch(
-      updateEmployee({
-        ...newForm,
-        index,
-      }),
-    );
+      // search(allDivisions.LT);
 
-    navigation.goBack();
-  }, []);
+      // dispatch(updateEmployee(newForm));
+    },
+    [],
+  );
 
   const removeEmployee = useCallback(
     (employee: Employee) => {
-      const employeesByDivision = allDivisions[employee.division]?.employees;
+      const search = (divs: any) => {
+        for (const key in divs) {
+          if (key !== 'employees') {
+            search(divs[key]);
 
-      const employeeToDelete = employeesByDivision.find(
-        (item: Employee) => item.id === employee.id,
-      );
+            if (divs[key].employees.includes(employee)) {
+              console.log(`${key}`);
+            }
+          }
+        }
+      };
 
       Alert.alert('Delete employee', 'Are you sure you want to delete?', [
         {
@@ -141,8 +149,8 @@ export const useEmployees = () => {
         {
           text: 'OK',
           onPress: () => {
-            dispatch(deleteEmployee(employeeToDelete));
-            navigation.goBack();
+            search(allDivisions.LT);
+            // navigation.goBack();
           },
         },
       ]);
