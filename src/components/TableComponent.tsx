@@ -12,7 +12,6 @@ import {isArray} from 'lodash';
 
 const TableComponent = () => {
   const data = useSelector((state: RootState) => state.general.data);
-  const divs = useSelector((state: RootState) => state.general.data);
 
   const {tableHead} = useSelector((state: RootState) => state.general);
 
@@ -77,29 +76,31 @@ const TableComponent = () => {
         const currentDivisionName = divisionName
           ? `${divisionName}.${key}`
           : key;
-
         if (!isArray(subdivisions[key])) {
-          views.push(
-            <DivisionTable
-              key={currentDivisionName}
-              divisionName={currentDivisionName}
-              employees={subdivision.employees}
-            />,
-          );
-
-          if (subdivision.hasOwnProperty('employees')) {
-            views.push(renderSubdivisions(subdivision, currentDivisionName));
+          if (subdivision?.employees && subdivision?.employees.length >= 1) {
+            views.push(
+              <DivisionTable
+                key={currentDivisionName}
+                divisionName={currentDivisionName}
+                employees={subdivision?.employees}
+              />,
+            );
           }
+        }
+        if (subdivision.hasOwnProperty('employees')) {
+          views.push(renderSubdivisions(subdivision, currentDivisionName));
         }
       }
     }
     return views;
   };
 
+  console.log(data);
+
   return (
     <Wrapper>
       <Container showsVerticalScrollIndicator={false}>
-        {renderSubdivisions(divs?.LT)}
+        {renderSubdivisions(data?.LT)}
       </Container>
     </Wrapper>
   );

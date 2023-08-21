@@ -128,18 +128,6 @@ export const useEmployees = () => {
 
   const removeEmployee = useCallback(
     (employee: Employee) => {
-      const search = (divs: any) => {
-        for (const key in divs) {
-          if (key !== 'employees') {
-            search(divs[key]);
-
-            if (divs[key].employees.includes(employee)) {
-              console.log(`${key}`);
-            }
-          }
-        }
-      };
-
       Alert.alert('Delete employee', 'Are you sure you want to delete?', [
         {
           text: 'Cancel',
@@ -149,8 +137,8 @@ export const useEmployees = () => {
         {
           text: 'OK',
           onPress: () => {
-            search(allDivisions.LT);
-            // navigation.goBack();
+            dispatch(deleteEmployee(employee));
+            navigation.goBack();
           },
         },
       ]);

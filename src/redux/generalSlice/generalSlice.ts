@@ -37,7 +37,9 @@ export const generalSlice = createSlice({
       divisionParts.forEach((part: string) => {
         if (!currentNode[part]) {
           currentNode[part] = {
-            test: '',
+            fullDivisionName: divisionParts
+              .slice(0, divisionParts.indexOf(part) + 1)
+              .join('.'),
             employees: [],
           };
         }
@@ -48,12 +50,23 @@ export const generalSlice = createSlice({
       currentNode.employees.push(action.payload);
     },
     deleteEmployee: (state, action) => {
-      const {division} = action.payload;
-      const filteredArray = state.data[division].employees.filter(
-        (employee: Employee) => employee.id !== action.payload.id,
-      );
+      const employee = action.payload;
 
-      state.data[division].employees = filteredArray;
+      const search = (divs: any) => {
+        for (const key in divs) {
+          const division = divs[key];
+
+          if (key !== 'employees' && key !== 'fullDivisionName') {
+            search(division);
+
+            division.employees = division.employees.filter(
+              item => item.id !== employee.id,
+            );
+          }
+        }
+      };
+
+      search(state.data);
     },
     updateEmployee: (state, action) => {},
     updateGeneralRates: (state, action) => {
