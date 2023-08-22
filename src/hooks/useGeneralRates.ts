@@ -12,9 +12,6 @@ import {useNavigation} from '@react-navigation/native';
 
 export const useGeneralRates = () => {
   const dispatch = useDispatch();
-  const employeesData = useSelector(
-    (state: RootState) => state.general.employees,
-  );
 
   const navigation = useNavigation<any>();
 

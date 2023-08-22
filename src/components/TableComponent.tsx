@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {ReactElement, useCallback} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {Table, Row} from 'react-native-table-component';
 import {useSelector} from 'react-redux';
@@ -9,6 +9,11 @@ import {useNavigation} from '@react-navigation/native';
 import {AppScreen} from '../typescript/static/AppScreens';
 import {Employee} from '../typescript/redux/generalTypes';
 import {isArray} from 'lodash';
+
+interface IProps {
+  divisionName: string;
+  employees: Employee[];
+}
 
 const TableComponent = () => {
   const data = useSelector((state: RootState) => state.general.data);
@@ -32,7 +37,7 @@ const TableComponent = () => {
     );
   }, []);
 
-  const DivisionTable = ({divisionName, employees}) => {
+  const DivisionTable = ({divisionName, employees}: IProps) => {
     return (
       <TableContainer>
         <DivisionTitle>{`LT.${divisionName}`}</DivisionTitle>
@@ -68,7 +73,7 @@ const TableComponent = () => {
     });
   }, []);
 
-  const renderSubdivisions = (subdivisions, divisionName = '') => {
+  const renderSubdivisions = (subdivisions: any, divisionName = ''): any => {
     const views = [];
     for (const key in subdivisions) {
       if (subdivisions.hasOwnProperty(key)) {
@@ -94,8 +99,6 @@ const TableComponent = () => {
     }
     return views;
   };
-
-  console.log(data);
 
   return (
     <Wrapper>

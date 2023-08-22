@@ -80,7 +80,7 @@ export const generalSlice = createSlice({
             search(division);
 
             const findEmployee = division.employees.find(
-              item => item.id === employee.id,
+              (item: Employee) => item.id === employee.id,
             );
 
             const index = division.employees.indexOf(findEmployee);
@@ -93,9 +93,10 @@ export const generalSlice = createSlice({
       search(state.data);
     },
     updateGeneralRates: (state, action) => {
-      state.employerTaxesRate = action.payload.employerTaxesRate;
-      state.monthlyHours = action.payload.monthlyHours;
-      state.exchangeRate = action.payload.exchangeRate;
+      const {employerTaxesRate, monthlyHours, exchangeRate} = action.payload;
+      state.employerTaxesRate = employerTaxesRate;
+      state.monthlyHours = monthlyHours;
+      state.exchangeRate = exchangeRate;
     },
     recalculateEmployeesData: (state, action) => {
       state.data = action.payload;
