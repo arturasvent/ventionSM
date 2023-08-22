@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {Employee, GeneralState} from '../../typescript/redux/generalTypes';
+import {Alert} from 'react-native';
 
 const initialState: GeneralState = {
   tableHead: [
@@ -60,7 +61,7 @@ export const generalSlice = createSlice({
             search(division);
 
             division.employees = division.employees.filter(
-              item => item.id !== employee.id,
+              (item: Employee) => item.id !== employee.id,
             );
           }
         }
@@ -68,7 +69,29 @@ export const generalSlice = createSlice({
 
       search(state.data);
     },
-    updateEmployee: (state, action) => {},
+    updateEmployee: (state, action) => {
+      const {newForm, employee} = action.payload;
+
+      const search = (divs: any) => {
+        for (const key in divs) {
+          const division = divs[key];
+
+          if (key !== 'employees' && key !== 'fullDivisionName') {
+            search(division);
+
+            const findEmployee = division.employees.find(
+              item => item.id === employee.id,
+            );
+
+            const index = division.employees.indexOf(findEmployee);
+
+            division.employees[index] = newForm;
+          }
+        }
+      };
+
+      search(state.data);
+    },
     updateGeneralRates: (state, action) => {
       state.employerTaxesRate = action.payload.employerTaxesRate;
       state.monthlyHours = action.payload.monthlyHours;

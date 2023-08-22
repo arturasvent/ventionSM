@@ -105,23 +105,8 @@ export const useEmployees = () => {
     (form: EmployeeForm, employee: Employee) => {
       const newForm = handleEmployeeForm(form, employee);
 
-      // const search = (divs: any) => {
-      //   for (const key in divs) {
-      //     if (key !== 'employees') {
-      //       search(divs[key]);
-
-      //       const indexToReplace = divs[key].employees.findIndex(
-      //         (item: Employee) => item.id === employee.id,
-      //       );
-
-      //       console.log(indexToReplace);
-      //     }
-      //   }
-      // };
-
-      // search(allDivisions.LT);
-
-      // dispatch(updateEmployee(newForm));
+      dispatch(updateEmployee({newForm, employee}));
+      navigation.goBack();
     },
     [],
   );
