@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {Employee, GeneralState} from '../../typescript/redux/generalTypes';
-import {Alert} from 'react-native';
 
 const initialState: GeneralState = {
   tableHead: [

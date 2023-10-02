@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {AppScreen} from '../typescript/static/AppScreens';
 import {Employee} from '../typescript/redux/generalTypes';
 import {isArray} from 'lodash';
+import AverageCalculationsContainer from './AverageCalculationsContainer';
 
 interface IProps {
   divisionName: string;
@@ -53,6 +54,7 @@ const TableComponent = () => {
           />
           {employees && renderEmployees(employees)}
         </Table>
+        <AverageCalculationsContainer data={employees} />
       </TableContainer>
     );
   };
